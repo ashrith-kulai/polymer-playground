@@ -1,0 +1,108 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="my-ajax">
+	<template>
+		<style include="shared-styles">
+			:host {
+				display: block;
+				padding: 10px;
+			}
+			.mt-20{
+				margin-top: 20px;
+			}
+		</style>
+		<div>
+			<paper-input value="{{myIp1}}" label="input 1"></paper-input>
+			<paper-input value="{{myIp2}}" label="input 2"></paper-input>
+			<paper-input value="{{myIp3}}" label="input 3"></paper-input>
+		</div>
+		<div class="mt-20">
+			<paper-button class="footer indigo" raised on-tap="sendData">POST REQUEST</paper-button>
+		</div>
+		<div>
+			<h3>serverSuccessObj</h3>
+			{{ssoDisplay}}
+		</div>
+		<div>
+			<h3>serverErrorObj</h3>
+			{{serverErrorObj}}
+		</div>
+
+
+		<iron-ajax
+				url="https://jsonplaceholder.typicode.com/posts"
+				id="postExample"
+				handle-as="json"
+				content-type="application/json"
+				method="POST"
+				body='{{postBody}}'
+				on-response="serverSuccessCb"
+				last-response="{{serverSuccessObj}}"
+				on-error="serverErrorCb"
+				last-error="{{serverErrorObj}}">
+		</iron-ajax>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'my-ajax',
+			properties: {
+				myIp1: {
+					type: String,
+					notify: true,
+				},
+				myIp2: {
+					type: String,
+					notify: true,
+				},
+				myIp3: {
+					type: String,
+					notify: true,
+				},
+				postBody: {
+					type: String,
+					computed: 'getPostBody(myIp1, myIp2, myIp3)'
+				},
+				serverErrorObj: Object,
+				serverSuccessObj: Object,
+				ssoDisplay: {
+					type: String,
+					computed: 'getSso(serverSuccessObj)'
+				}
+			},
+			sendData: function (event) {
+				this.$$('#postExample').generateRequest();
+			},
+			getPostBody: function (i1, i2, i3) {
+				return {
+					i1: i1,
+					i2: i2,
+					i3: i3
+				};
+			},
+			serverSuccessCb: function () {
+
+			},
+			serverErrorCb: function () {
+
+			},
+			getSso: function (serverSuccessObj) {
+				return JSON.stringify(serverSuccessObj);
+			}
+		});
+	</script>
+</dom-module>

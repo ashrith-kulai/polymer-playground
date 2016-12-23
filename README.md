@@ -1,1 +1,1 @@
-# polymer-playground
+# Polymer Playground
