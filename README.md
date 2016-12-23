@@ -1,5 +1,5 @@
 # Polymer Playground
-Receipies on how to use polymer effectively. Production quality solutions. 
+Recipes on how to use polymer effectively. Production quality solutions. 
 
   - AJAX POST - dynamic post body example
   
